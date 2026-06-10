@@ -68,15 +68,15 @@
       </div>
 
       <div class="news-filter reveal">
-        <button class="news-filter-btn active">All</button>
-        <button class="news-filter-btn">Education</button>
-        <button class="news-filter-btn">Health</button>
-        <button class="news-filter-btn">Economic</button>
-        <button class="news-filter-btn">Community</button>
-      </div>
+        <button class="news-filter-btn active" data-filter="All">All</button>
+        <button class="news-filter-btn" data-filter="Education">Education</button>
+        <button class="news-filter-btn" data-filter="Health">Health</button>
+        <button class="news-filter-btn" data-filter="Economic">Economic</button>
+        <button class="news-filter-btn" data-filter="Community">Community</button>
+    </div>
 
       <div class="news-grid">
-        <article class="news-card reveal">
+        <article class="news-card reveal" data-category="Education">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&q=80" alt="Mary's story" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -94,7 +94,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-1">
+        <article class="news-card reveal reveal-delay-1" data-category="Health">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?w=600&q=80" alt="Mobile clinic milestone" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -112,7 +112,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-2">
+        <article class="news-card reveal reveal-delay-2" data-category="Economic">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1504052434569-70ad5836ab65?w=600&q=80" alt="Women's savings group" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -130,7 +130,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal">
+        <article class="news-card reveal" data-category="Education">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=600&q=80" alt="New classrooms" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -148,7 +148,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-1">
+        <article class="news-card reveal reveal-delay-1" data-category="Health">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=600&q=80" alt="Vaccination drive" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -166,7 +166,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-2">
+        <article class="news-card reveal reveal-delay-2" data-category="Economic">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1563514227147-6d2ff665a6a0?w=600&q=80" alt="Harvest festival" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -184,7 +184,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal">
+        <article class="news-card reveal" data-category="Education">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" alt="Digital literacy" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -202,7 +202,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-1">
+        <article class="news-card reveal reveal-delay-1" data-category="Community">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1594708767771-a7502209ff51?w=600&q=80" alt="Community event" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -220,7 +220,7 @@
           </div>
         </article>
 
-        <article class="news-card reveal reveal-delay-2">
+        <article class="news-card reveal reveal-delay-2" data-category="Community">
           <img class="news-card-img" src="https://images.unsplash.com/photo-1578996953841-b187dbe4bc8a?w=600&q=80" alt="Partnership" loading="lazy" />
           <div class="news-card-body">
             <div class="news-card-meta">
@@ -326,9 +326,10 @@
   </footer>
 
   <a href="getinvolved.html#donate" class="fab-donate">
-    💛 Donate
+    Donate
   </a>
 
+  
   <script>
     const nav = document.getElementById('mainNav');
     window.addEventListener('scroll', () => {
@@ -348,12 +349,33 @@
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
     // Simple filter toggle
-    document.querySelectorAll('.news-filter-btn').forEach(btn => {
-      btn.addEventListener('click', function() {
-        document.querySelectorAll('.news-filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-      });
+    const filterButtons = document.querySelectorAll('.news-filter-btn');
+const newsCards = document.querySelectorAll('.news-card');
+
+filterButtons.forEach(button => {
+  button.addEventListener('click', () => {
+
+    // Update active button
+    filterButtons.forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+
+    const category = button.textContent.trim();
+
+    newsCards.forEach(card => {
+
+      if (
+        category === 'All' ||
+        card.dataset.category === category
+      ) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+
     });
+
+  });
+});
 
     document.getElementById('hamburger').addEventListener('click', () => {
       const links = document.querySelector('.nav-links');
